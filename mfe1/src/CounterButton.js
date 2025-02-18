@@ -1,9 +1,11 @@
 import React from "react";
-import { useCounterStore } from "shell/store"; 
 
 const CounterButton = () => {
-  const increment = useCounterStore((state) => state.increment);
-  return <button onClick={increment}>Tăng Count</button>;
+  const sendMessage = () => {
+    window.parent.postMessage({ type: "INCREMENT_COUNT" }, "*");
+  };
+
+  return <button onClick={sendMessage}>Tăng Count</button>;
 };
 
 export default CounterButton;

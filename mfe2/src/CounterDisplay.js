@@ -1,9 +1,22 @@
-import React from "react";
-import { useCounterStore } from "shell/store";
+export default class CounterDisplay extends HTMLElement {
+  constructor() {
+    super();
+    this.count = 0;
+    this.render();
+  }
 
-const CounterDisplay = () => {
-  const count = useCounterStore((state) => state.count);
-  return <h2>Giá trị Count: {count}</h2>;
-};
+  connectedCallback() {
+    window.addEventListener("message", (event) => {
+      if (event.data.type === "INCREMENT_COUNT") {
+        this.count++;
+        this.render();
+      }
+    });
+  }
 
-export default CounterDisplay;
+  render() {
+    this.innerHTML = `<h2>Giá trị Count: ${this.count}</h2>`;
+  }
+}
+
+customElements.define("mfe-two", CounterDisplay);
